@@ -18,22 +18,3 @@ try:
 except Exception as e:
     print(f"Error: {e}")
 
-# from transcript_extraction import extract_transcript_with_lang_choice
-
-# url = input("Enter YouTube video URL: ")
-
-# try:
-#     transcript = extract_transcript_with_lang_choice(url)
-
-#     print("\n--- Transcript ---\n")
-#     # print(transcript_text)
-#     for entry in transcript:
-#         # Use attribute access, not dictionary keys
-#         # print(f"{entry.start:.2f}s: {entry.text}")
-#         joined_text = " ".join(entry.text for entry in transcript)
-#         print(joined_text)
-
-# except Exception as e:
-#     print(f"Error: {e}")
-
-
