@@ -1,5 +1,6 @@
 
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
+from youtube_transcript_api.formatters import TextFormatter
 
 # Function to extract video ID from full URL
 from urllib.parse import urlparse, parse_qs
@@ -30,12 +31,36 @@ def get_video_id(url: str) -> str | None:
 
     return None
 
-def extract_transcript(url: str, languages=None):
-    """Fetches transcript text for a given YouTube URL."""
-    video_id = get_video_id(url)
-    if not video_id:
-        raise ValueError("Invalid YouTube URL")
 
-    transcript = YouTubeTranscriptApi().fetch(video_id,languages=languages or ['en'])
+def extract_transcript_with_lang_choice(url: str):
+    # Step 1: Extract video ID (using your existing get_video_id function)
+    video_id = get_video_id(url)
+
+    # Step 2: Get all available transcripts
+    transcript_list = YouTubeTranscriptApi().list(video_id)
+
+    # Step 3: Show available languages
+    print("\nAvailable languages:")
+    available_langs = {}
+    idx = 1
+    for transcript in transcript_list:
+        lang_name = transcript.language
+        lang_code = transcript.language_code
+        available_langs[idx] = lang_code
+        print(f"{idx}. {lang_name} ({lang_code})")
+        idx += 1
+
+    # Step 4: Ask user for choice
+    choice = int(input("\nEnter the number of your preferred language: "))
+    chosen_lang = available_langs.get(choice)
+    if not chosen_lang:
+        raise ValueError("Invalid choice")
+
+    # Step 5: Fetch transcript in chosen language
+    transcript = YouTubeTranscriptApi().fetch(video_id, languages=[chosen_lang])
+    
+    # transcript_text = " ".join([entry['text'] for entry in transcript])
+
     return transcript
+
 
