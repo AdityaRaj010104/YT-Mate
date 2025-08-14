@@ -39,20 +39,3 @@ def extract_transcript(url: str, languages=None):
     transcript = YouTubeTranscriptApi().fetch(video_id,languages=languages or ['en'])
     return transcript
 
-
-# url = input("Enter YouTube video URL: ")
-
-# video_id = get_video_id(url)
-
-# if video_id:
-#     try:
-#         transcript = YouTubeTranscriptApi().fetch(video_id)
-#         print("\n--- Transcript ---\n")
-#         for entry in transcript:
-#             print(f"{entry.start:.2f}s: {entry.text}")
-#     except Exception as e:
-#         print(f"Error: {e}")
-# else:
-#     print("Invalid YouTube URL")
-
-
