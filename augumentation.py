@@ -1,36 +1,51 @@
-def build_augmented_prompt(retriever, question):
+from langchain.prompts import PromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+def build_augmented_prompt(query, retrieved_docs):
     """
-    Builds an augmented prompt by combining the user query with
-    retrieved transcript context for use in an LLM.
+    Builds an augmented prompt by combining retrieved transcript docs
+    and querying Gemini LLM for an answer.
 
     Args:
-        retriever: LangChain retriever object
-        question (str): The user's question
+        query (str): User's question
+        retrieved_docs (list): List of LangChain Document objects
 
     Returns:
-        str: The final prompt string ready to send to the LLM
+        str: LLM-generated answer
     """
-    from langchain.prompts import PromptTemplate
+    try:
+        # Join retrieved docs into a single context string
+        context = "\n\n".join(doc.page_content for doc in retrieved_docs)
 
-    # Retrieve relevant documents
-    retrieved_docs = retriever.invoke(question)
+        # Define the augmentation prompt
+        prompt = PromptTemplate(
+            template="""
+            You are a helpful assistant.
+            Answer ONLY from the provided transcript context below.
+            If the context is insufficient, respond with "I don't know".
 
-    # Combine all retrieved chunks into one context string
-    context_text = "\n\n".join(doc.page_content for doc in retrieved_docs)
+            Transcript Context:
+            {context}
 
-    # Define the prompt template
-    prompt = PromptTemplate(
-        template=(
-            "You are a helpful assistant.\n"
-            "Answer ONLY from the provided transcript context.\n"
-            "If the context is insufficient, just say you don't know.\n\n"
-            "{context}\n"
-            "Question: {question}"
-        ),
-        input_variables=['context', 'question']
-    )
+            Question: {question}
+            """,
+            input_variables=["context", "question"]
+        )
 
-    # Fill in the template
-    final_prompt = prompt.format(context=context_text, question=question)
+        # Instantiate Gemini LLM
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-2.0-flash",  # ✅ lightweight, fast Gemini model
+            temperature=0.2
+        )
 
-    return final_prompt
+        # Format the prompt with context + question
+        final_prompt = prompt.format(context=context, question=query)
+
+        # Run the LLM
+        response = llm.invoke(final_prompt)
+
+        return response.content
+
+    except Exception as e:
+        print(f"❌ Error in augmentation: {e}")
+        return "Error occurred while generating answer."

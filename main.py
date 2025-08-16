@@ -2,6 +2,7 @@ from transcript_extraction import extract_transcript_with_lang_choice
 from text_splitter import split_text
 from embedding_generation import generate_and_store_embeddings
 from retriever import retrieve_from_vectorstore
+from augumentation import build_augmented_prompt
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,11 +24,15 @@ def main():
 
         # Step 4: Ask user query for retrieval
         query = input("\nEnter your question: ")
-        results = retrieve_from_vectorstore(query)
+        retrieved_docs = retrieve_from_vectorstore(query)
 
         # print("\n🔎 Retrieved Results:")
         # for i, doc in enumerate(results, start=1):
         #     print(f"\nResult {i}:\n{doc.page_content}\n{'-'*50}")
+        
+        # Step 6: Augment query with retrieved docs + Gemini
+        answer = build_augmented_prompt(query, retrieved_docs)
+        print("\n🤖 Gemini Answer:\n", answer)
 
     except Exception as e:
         print(f"❌ Error: {e}")
