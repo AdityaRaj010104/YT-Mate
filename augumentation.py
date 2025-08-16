@@ -4,7 +4,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 def build_augmented_prompt(query, retrieved_docs):
     """
     Builds an augmented prompt by combining retrieved transcript docs
-    and querying Gemini LLM for an answer.
+    and querying Gemini LLM for an answer, that I will be using as a prompt for the final step means i will give that prompt to gemini late, for now my goal is to get that prompt.
 
     Args:
         query (str): User's question
@@ -32,19 +32,10 @@ def build_augmented_prompt(query, retrieved_docs):
             input_variables=["context", "question"]
         )
 
-        # Instantiate Gemini LLM
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",  # ✅ lightweight, fast Gemini model
-            temperature=0.2
-        )
-
         # Format the prompt with context + question
         final_prompt = prompt.format(context=context, question=query)
 
-        # Run the LLM
-        response = llm.invoke(final_prompt)
-
-        return response.content
+        return final_prompt
 
     except Exception as e:
         print(f"❌ Error in augmentation: {e}")
