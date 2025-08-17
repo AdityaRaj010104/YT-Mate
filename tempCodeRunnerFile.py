@@ -1,1 +1,0 @@
-print(vector_store)

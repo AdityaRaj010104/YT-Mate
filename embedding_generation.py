@@ -30,7 +30,7 @@ def generate_and_store_embeddings(chunks, vectorstore_path="faiss_index"):
 
         # Save the vector store locally
         vector_store.save_local(vectorstore_path)
-        print(f"✅Embedding generated and Vector store saved to '{vectorstore_path}'")
+        # print(f"✅Embedding generated and Vector store saved to '{vectorstore_path}'")
 
         return vector_store
 
