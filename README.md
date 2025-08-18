@@ -11,6 +11,13 @@ Transform any YouTube video into an intelligent conversational partner! YT-Mate 
 - **⚡ Fast Processing** - Cached vector stores for instant responses
 - **🎯 Accurate Responses** - Answers based solely on video content, no hallucinations
 
+## 🎥 Demo
+
+<div align="center">
+  <img src="demo/YT-Demo-1.png" alt="YT-Mate Interface" width="45%">
+  <img src="demo/YT-Demo-2.png" alt="Chat Interface" width="45%">
+</div>
+
 ## 🛠️ Technology Stack
 
 - **Frontend**: Streamlit (Web UI)
