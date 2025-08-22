@@ -1,4 +1,4 @@
-# 🎬 YT-Mate: Chat with YouTube Videos
+# 🎬 YT-Mate: An LLM-assisted chatbot for YouTube videos
 
 Transform any YouTube video into an intelligent conversational partner! YT-Mate uses advanced AI to let you chat directly with video content, get instant summaries, and find specific information without watching hours of footage.
 
