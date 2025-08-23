@@ -27,5 +27,8 @@ scikit-learn
 
 youtube-transcript-api
 
+langchain
+langchain-community
+faiss-cpu
 
 
