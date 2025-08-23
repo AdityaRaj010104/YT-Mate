@@ -25,6 +25,7 @@ python-dotenv
 numpy
 scikit-learn
 
+youtube-transcript-api
 
 
 
